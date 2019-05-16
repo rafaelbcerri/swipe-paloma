@@ -17,21 +17,19 @@ function addHammerToElement(element) {
   const elementHammer = new Hammer(element);
   elementHammer.on("pan", (event) => {
     const xMovement = event.deltaX;
-    if (xMovement > 100 || xMovement < -100) {
-      const rotationDeg = xMovement * 0.2;
+    const rotationDeg = xMovement * 0.2;
 
-      renderAnimation(element, xMovement, 0, rotationDeg);
-    }
+    renderAnimation(element, xMovement, 0, rotationDeg);
   });
 
   elementHammer.on("panend", event => {
     const xMovement = event.deltaX;
-    if (xMovement > 90 || xMovement < -90) {
+    if (xMovement > 80 || xMovement < -80) {
       const { xPosition, yPosition} = getCoordsFromEvent(event)
       const rotationDeg = xMovement * 0.2;
 
       renderAnimation(element, xPosition, yPosition, rotationDeg);
-      swipeGif();
+      handleGifSwipe();
     } else {
       renderAnimation(element, 0, 0, 0);
     }
@@ -66,7 +64,7 @@ function getGifs(limit=3, offset=0) {
 }
 
 
-async function swipeGif() {
+async function handleGifSwipe() {
   const data = await getGifs(1, offset++);
   const imageUrl = data[0].images.fixed_height.url;
   element.children[element.children.length - 1].remove();
@@ -83,4 +81,5 @@ function template(url) {
     </div>
   `;
 }
+
 initialize();
